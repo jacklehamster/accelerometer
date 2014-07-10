@@ -35,36 +35,38 @@
 		}
 		
 		protected function onFrame(e:Event):void {
-			mov.y += gravity;
-			var nextPos:Point = new Point(x+mov.x*scaleX,y+mov.y*scaleY);
-			grounded = false;
-			bounce = false;
-			
-			if(collide(nextPos.x,nextPos.y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
-				if(!collide(nextPos.x,y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
-					hitGround();
-					nextPos.y = y;
-				}
-				else if(!collide(x,nextPos.y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
-					hitWall();
-					nextPos.x = x;
-				}
-				else {
-					hitWall();
-					hitGround();
-					nextPos.x = x;
-					nextPos.y = y;
-				}
-				slowDown();
-			}
-			x = nextPos.x;
-			y = nextPos.y;
-			
-			if(bounce) {
-				bounce = false;
-				mov.y = -18;
+			if(!Element.paused) {
+				mov.y += gravity;
+				var nextPos:Point = new Point(x+mov.x*scaleX,y+mov.y*scaleY);
 				grounded = false;
-				jumping = true;
+				bounce = false;
+				
+				if(collide(nextPos.x,nextPos.y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
+					if(!collide(nextPos.x,y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
+						hitGround();
+						nextPos.y = y;
+					}
+					else if(!collide(x,nextPos.y,bodyWidth()*scaleX,bodyHeight()*scaleY)) {
+						hitWall();
+						nextPos.x = x;
+					}
+					else {
+						hitWall();
+						hitGround();
+						nextPos.x = x;
+						nextPos.y = y;
+					}
+					slowDown();
+				}
+				x = nextPos.x;
+				y = nextPos.y;
+				
+				if(bounce) {
+					bounce = false;
+					mov.y = -18;
+					grounded = false;
+					jumping = true;
+				}
 			}
 		}
 		

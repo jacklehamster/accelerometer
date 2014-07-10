@@ -26,11 +26,11 @@
 			}
 			tf.text = tf.text.split("%level").join(level);
 			
-			stage.addEventListener(KeyboardEvent.KEY_UP,onKey);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKey);
 		}
 		
 		override protected function offStage(e:Event):void {
-			stage.removeEventListener(KeyboardEvent.KEY_UP,onKey);
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN,onKey);
 			super.offStage(e);
 		}
 

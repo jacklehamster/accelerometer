@@ -2,9 +2,16 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import flash.events.EventDispatcher;
 	
 	public class Element extends MovieClip {
 
+		static protected var globalDispatcher:EventDispatcher = new EventDispatcher();
+
+		static protected var paused:Boolean = false;
+		
+		
+		
 		static private var recycler:Dictionary = new Dictionary();
 		public var sceneName:String = null;
 		
@@ -31,6 +38,24 @@
 			initialize();
 		}
 		
+		protected function pause():void {
+			
+		}
+		
+		protected function resume():void {
+			
+		}
+		
+		static public function pauseGame():void {
+			paused = true;
+			globalDispatcher.dispatchEvent(new Event("pause"));
+		}
+
+		static public function resumeGame():void {
+			paused = false;
+			globalDispatcher.dispatchEvent(new Event("resume"));
+		}
+		
 		public function initialize():void {
 		}
 		
@@ -41,9 +66,20 @@
 		protected function onStage(e:Event):void {
 			sceneName = project.currentScene.name;
 			project.stop();
+			addEventListener("pause",onPause);
+			addEventListener("resume",onPause);
 		}
 		
 		protected function offStage(e:Event):void {
+			removeEventListener("pause",onPause);
+			removeEventListener("resume",onPause);
+		}
+		
+		private function onPause(e:Event):void {
+			if(e.type=="pause")
+				pause();
+			else if(e.type=="resume")
+				resume();
 		}
 		
 		protected function get master():MovieClip {
